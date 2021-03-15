@@ -12,7 +12,28 @@ defmodule Worker do
 
   @impl true
   def handle_cast({:worker, message}, _states) do
-    IO.inspect(%{"message:" => message})
+    process_message(message)
     {:noreply, %{}}
+  end
+
+  def process_message(message) do
+    if message.data =~ "{\"message\": panic}" do
+      IO.inspect(%{"Kill message:" => message.data})
+      Process.exit(self(), :kill)
+    else
+      parsed_data = Poison.decode!(message.data)
+      rate_message(parsed_data["message"]["tweet"])
+    end
+  end
+
+  def rate_message(message) do
+    words =
+      message["text"]
+      |> String.split(" ", trim: true)
+
+    scores = Enum.map(words, fn word -> EmotionValues.get_emotion_value(word) end)
+    score = Enum.sum(scores)
+
+    IO.puts(score)
   end
 end

@@ -22,7 +22,8 @@ defmodule RTP.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:eventsource_ex, "~> 0.0.2"}
+      {:eventsource_ex, "~> 0.0.2"},
+      {:poison, "~> 3.1"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end
