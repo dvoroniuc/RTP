@@ -1,6 +1,7 @@
 defmodule Connection do
   def start_link(link) do
-    {:ok, _pid} = EventsourceEx.new(link, stream_to: spawn_link(fn -> get_message() end))
+    link_to = spawn_link(fn -> get_message() end)
+    {:ok, _pid} = EventsourceEx.new(link, stream_to: link_to)
   end
 
   def get_message() do
