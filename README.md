@@ -21,6 +21,5 @@ run `mix run --no-halt` to run the app
 
 
 ## Demo
+![Alt Text](https://github.com/dvoroniuc/RTP/blob/master/rtp.gif)
 
-
-https://user-images.githubusercontent.com/56967906/111125735-9f4c1580-857a-11eb-98d8-59272d9be3a4.mp4
