@@ -19,6 +19,7 @@ defmodule Worker do
   def process_message(message) do
     if message.data =~ "{\"message\": panic}" do
       IO.inspect(%{"Kill message:" => message.data})
+      IO.inspect(%{"self():" => self()})
       Process.exit(self(), :kill)
     else
       parsed_data = Poison.decode!(message.data)
@@ -33,7 +34,9 @@ defmodule Worker do
 
     scores = Enum.map(words, fn word -> EmotionValues.get_emotion_value(word) end)
     score = Enum.sum(scores)
-
+    IO.inspect(%{"self():" => self()})
     IO.puts(score)
+
+    Process.exit(self(), :kill)
   end
 end
