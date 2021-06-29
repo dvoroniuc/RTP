@@ -2,7 +2,11 @@ defmodule Worker do
   use GenServer, restart: :transient
 
   def start_link(message) do
-    GenServer.start(__MODULE__, message, name: __MODULE__)
+    GenServer.start_link(__MODULE__, :ok, name: {:global, message})
+  end
+
+  def process(tweet) do
+    GenServer.cast(__MODULE__, {:process, tweet})
   end
 
   @impl true
@@ -11,17 +15,16 @@ defmodule Worker do
   end
 
   @impl true
-  def handle_cast({:worker, message}, _states) do
+  def handle_cast({:process, message}, _states) do
     process_message(message)
     {:noreply, %{}}
   end
 
   def process_message(message) do
-    if message.data =~ "{\"message\": panic}" do
-      IO.inspect(%{"Kill message:" => message.data})
-      Process.exit(self(), :kill)
+    if message =~ "{\"message\": panic}" do
+      IO.inspect(%{"Kill message:" => message})
     else
-      parsed_data = Poison.decode!(message.data)
+      parsed_data = Poison.decode!(message)
       rate_message(parsed_data["message"]["tweet"])
     end
   end

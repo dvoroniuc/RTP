@@ -10,24 +10,16 @@ defmodule RTP.Application do
     # List all child processes to be supervised
     children = [
       %{
-        id: Worker,
-        start: {Worker, :start_link, [""]}
-      },
-      %{
-        id: WorkerSupervisor,
-        start: {WorkerSupervisor, :start_link, [""]}
-      },
-      %{
         id: Router,
         start: {Router, :start_link, [""]}
       },
       %{
         id: Connection1,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/1"]}
+        start: {Connection, :start_link, ["localhost:4000/tweets/1"]}
       },
       %{
         id: Connection2,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/2"]}
+        start: {Connection, :start_link, ["localhost:4000/tweets/2"]}
       }
     ]
 

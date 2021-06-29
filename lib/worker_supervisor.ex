@@ -19,8 +19,4 @@ defmodule WorkerSupervisor do
   def kill_worker(worker_pid) do
     DynamicSupervisor.terminate_child(__MODULE__, worker_pid)
   end
-
-  def send_message(message) do
-    GenServer.cast(Worker, {:worker, message})
-  end
 end

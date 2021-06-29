@@ -1,15 +1,14 @@
 defmodule Connection do
   def start_link(link) do
-    link_to = spawn_link(fn -> get_message() end)
-    {:ok, _pid} = EventsourceEx.new(link, stream_to: link_to)
+    EventsourceEx.new(link, stream_to: self())
+    get_message()
   end
 
   def get_message() do
     receive do
-      message -> GenServer.cast(Router, {:router, message})
+      tweet -> Router.router(tweet)
+      get_message()
     end
-
-    get_message()
   end
 
   def child_spec(arg) do
